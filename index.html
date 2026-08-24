@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tvashta Labs | Lightweight GPU Orchestration for AI Infrastructure</title>
+  <meta name="description" content="Tvashta Labs builds lightweight orchestration software that helps datacenters manage bare-metal GPUs for AI workloads. Faster and leaner than OpenStack.">
+  <link rel="canonical" href="https://tvashta-labs.in/">
+  <meta name="robots" content="index, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+  <!-- JSON-LD: Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Tvashta Labs",
+    "url": "https://tvashta-labs.in",
+    "description": "Tvashta Labs builds lightweight orchestration software that helps datacenters manage bare-metal GPUs for AI workloads.",
+    "founder": [
+      {
+        "@type": "Person",
+        "name": "Ishan Khare",
+        "jobTitle": "Co-founder"
+      },
+      {
+        "@type": "Person",
+        "name": "Shivang K Raghuvanshi",
+        "jobTitle": "Co-founder"
+      }
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "MeghCloud",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Linux",
+    "description": "Unified single plane platform for ML Engineers to develop and inference AI Models.",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": "0",
+      "description": "Contact for pricing"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Tvashta Labs"
+    }
+  }
+  </script>
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+       ============================================================ */
+    :root {
+      --paper: #F5F3EE;
+      --paper-dim: #EDEBE5;
+      --ink: #1A1A1A;
+      --ink-mute: #55534E;
+      --rule: #D6D2C8;
+      --accent: #B14A1F;
+      --f: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    html {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--f);
+      font-weight: 400;
+      font-size: 17px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      scroll-behavior: smooth;
+    }
+    h1, h2, h3, h4, p, ul, ol { margin: 0; padding: 0; }
+    ul, ol { list-style: none; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ============================================================
+       LAYOUT
+       ============================================================ */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    section {
+      padding: 5rem 0;
+    }
+
+    section + section {
+      border-top: 1px solid var(--rule);
+    }
+
+    /* ============================================================
+       NAV
+       ============================================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--paper);
+      border-bottom: 1px solid var(--rule);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav__brand {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .nav__links {
+      display: flex;
+      gap: 2rem;
+    }
+    .nav__links a {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--ink-mute);
+      transition: color 150ms ease;
+    }
+    .nav__links a:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 4rem;
+      border-top: none;
+      background-image: url('background.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .hero + section {
+      border-top: 1px solid var(--rule);
+    }
+    .hero__wordmark {
+      font-weight: 900;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .hero__subtitle {
+      font-weight: 400;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      line-height: 1.45;
+      color: var(--ink);
+      max-width: 52ch;
+      margin-bottom: 2rem;
+    }
+    .hero__subtitle strong {
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .hero__rule {
+      width: 80px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 2.5rem;
+    }
+    .hero__cta {
+      display: inline-block;
+      font-family: var(--f);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--paper);
+      background: var(--accent);
+      padding: 0.85rem 2rem;
+      border: none;
+      cursor: pointer;
+      transition: opacity 150ms ease;
+      letter-spacing: 0.01em;
+    }
+    .hero__cta:hover {
+      opacity: 0.85;
+      text-decoration: none;
+    }
+
+    /* ============================================================
+       SECTION TITLES
+       ============================================================ */
+    .section-title {
+      font-weight: 700;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--ink);
+      margin-bottom: 2rem;
+    }
+
+    /* ============================================================
+       PRODUCT STACK
+       ============================================================ */
+    .product-intro {
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--ink);
+      max-width: 60ch;
+      margin-bottom: 2rem;
+    }
+    .stack {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    .layer {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      column-gap: 2rem;
+      align-items: center;
+      padding: 1.8rem 2rem;
+      border: 1px solid var(--ink);
+      border-bottom: none;
+    }
+    .layer--l3 { background: var(--paper); }
+    .layer--l2 { background: #ECE8DD; }
+    .layer--l1 { background: #E2DCCB; }
+    .layer__name {
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.2;
+      color: var(--accent);
+    }
+    .layer__desc {
+      font-weight: 400;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--ink);
+      max-width: 55ch;
+    }
+    .stack__base {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      column-gap: 2rem;
+      align-items: center;
+      padding: 1.4rem 2rem;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+    }
+    .stack__base-label {
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.3;
+      color: var(--paper);
+    }
+    .stack__base-desc {
+      font-weight: 400;
+      font-size: 0.95rem;
+      line-height: 1.3;
+      color: var(--paper);
+      opacity: 0.8;
+    }
+
+    /* ============================================================
+       BENCHMARK
+       ============================================================ */
+    .bench {
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .bench__header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .bench__title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--ink);
+    }
+    .bench__badge {
+      font-weight: 400;
+      font-size: 0.9rem;
+      color: var(--ink-mute);
+    }
+    .bench__rows {
+      display: flex;
+      flex-direction: column;
+    }
+    .bench__row {
+      display: grid;
+      grid-template-columns: 200px 1fr 60px;
+      column-gap: 1.2rem;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .bench__row:first-child { padding-top: 0; }
+    .bench__row:last-child { padding-bottom: 0; border-bottom: none; }
+    .bench__label {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+    .bench__label--hero { color: var(--accent); }
+    .bench__track {
+      height: 12px;
+      background: transparent;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bench__bar {
+      height: 100%;
+      border-radius: 999px;
+      background: #F5C882;
+    }
+    .bench__bar--hero { background: #5B8DB8; }
+    .bench__value {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--ink);
+      text-align: right;
+    }
+    .bench__value--hero { color: var(--accent); }
+    .bench__delta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--rule);
+    }
+    .bench__delta-label {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+    .bench__delta-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.2rem;
+    }
+    .bench__delta-value {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+    .bench__delta-sub {
+      font-weight: 400;
+      font-size: 0.9rem;
+      color: var(--ink);
+    }
+
+    /* ============================================================
+       HOW IT WORKS (before/after)
+       ============================================================ */
+    .how {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    .how__col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .how__label {
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .how__label--before { color: var(--ink-mute); }
+    .how__label--after { color: var(--accent); }
+    .how__items {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .how__item {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--ink);
+      padding: 1rem 0 1rem 1.6rem;
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+    }
+    .how__item:last-child { border-bottom: none; }
+    .how__item::before {
+      content: '\2022';
+      position: absolute;
+      left: 0;
+      top: 1rem;
+      color: var(--ink-mute);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .how__col--after .how__item::before {
+      color: var(--accent);
+    }
+    .how__summary {
+      font-size: 1.05rem;
+      line-height: 1.5;
+      color: var(--ink);
+      max-width: 60ch;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 2px solid var(--ink);
+    }
+    .how__summary strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ============================================================
+       TEAM
+       ============================================================ */
+    .team {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4rem;
+      align-items: stretch;
+    }
+    .founder {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .founder__name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+      letter-spacing: -0.01em;
+    }
+    .founder__bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      flex: 1;
+    }
+    .founder__bullets li {
+      font-weight: 400;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--ink);
+      padding-left: 1.4rem;
+      position: relative;
+    }
+    .founder__bullets li::before {
+      content: '\2022';
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--accent);
+    }
+    .linkedin-btn {
+      display: inline-block;
+      align-self: flex-start;
+      margin-top: auto;
+      font-family: var(--f);
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--ink);
+      border: 1px solid var(--rule);
+      padding: 0.5rem 1.2rem;
+      transition: border-color 150ms ease, color 150ms ease;
+      letter-spacing: 0.01em;
+    }
+    .linkedin-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ============================================================
+       CONTACT
+       ============================================================ */
+    .contact {
+      text-align: center;
+      padding: 6rem 0;
+    }
+    .contact__headline {
+      font-weight: 700;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+    .contact__rule {
+      width: 60px;
+      height: 2px;
+      background: var(--accent);
+      margin: 2rem auto;
+    }
+    .contact__links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      align-items: center;
+    }
+    .contact__links p {
+      font-size: 1rem;
+      color: var(--ink);
+    }
+    .contact__links a {
+      color: var(--accent);
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem 0;
+      text-align: center;
+    }
+    .footer p {
+      font-size: 0.85rem;
+      color: var(--ink-mute);
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 768px) {
+      section { padding: 4rem 0; }
+      .nav__links { gap: 1.2rem; }
+      .nav__links a { font-size: 0.8rem; }
+      .layer {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+      .stack__base {
+        grid-template-columns: 1fr;
+        gap: 0.3rem;
+      }
+      .bench__row {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+      }
+      .bench__track { width: 100%; }
+      .bench__value { text-align: left; }
+      .how {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      .team {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 1.2rem; }
+      .nav { padding: 0.8rem 1.2rem; }
+      .nav__links { gap: 0.8rem; }
+      .hero__wordmark { margin-bottom: 1.5rem; }
+      .bench { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav__brand">Tvashta Labs</div>
+    <div class="nav__links">
+      <a href="#product">Product</a>
+      <a href="#benchmark">Vajra</a>
+      <a href="#how">How It Works</a>
+      <a href="#team">Team</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <h1 class="hero__wordmark">Tvashta Labs</h1>
+      <p class="hero__subtitle">
+        Tvashta Labs builds <strong>lightweight GPU orchestration</strong> for datacenters and a <strong>unified platform</strong> for ML engineers to develop and inference AI models, all without the complexity of traditional infrastructure.
+      </p>
+      <div class="hero__rule"></div>
+      <a href="#contact" class="hero__cta">Get in Touch</a>
+    </div>
+  </section>
+
+  <!-- PRODUCT -->
+  <section id="product">
+    <div class="container">
+      <h2 class="section-title">What We Build</h2>
+      <p class="product-intro">We turn raw datacenter hardware into a platform with all AI tools integrated, ready for ML engineers to use without any setup.</p>
+      <div class="stack">
+        <div class="layer layer--l3">
+          <div class="layer__name">MeghCloud</div>
+          <p class="layer__desc">Unified single plane platform for ML Engineers to develop and inference AI Models.</p>
+        </div>
+        <div class="layer layer--l2">
+          <div class="layer__name">High Performance Tools like Vajra</div>
+          <p class="layer__desc">Cost-saving and performance-maximizing tools for GPU datacenters. Includes our fast AI model weights streamer.</p>
+        </div>
+        <div class="layer layer--l1">
+          <div class="layer__name">Niyanta</div>
+          <p class="layer__desc">Lean, bare-metal orchestration for GPU datacenters.</p>
+        </div>
+        <div class="stack__base">
+          <div class="stack__base-label">Bare-metal GPUs</div>
+          <div class="stack__base-desc">Datacenter hardware</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENCHMARK -->
+  <section id="benchmark">
+    <div class="container">
+      <h2 class="section-title">Vajra, Our Model Streamer</h2>
+      <p class="product-intro">Vajra, our AI model weights streamer, beats NVIDIA Run:ai and Hugging Face hf_transfer in model load times.</p>
+      <div class="bench">
+        <div class="bench__header">
+          <span class="bench__title">Model load time</span>
+          <span class="bench__badge">(Lower is better)</span>
+        </div>
+        <div class="bench__rows">
+          <div class="bench__row">
+            <span class="bench__label bench__label--hero">Vajra</span>
+            <div class="bench__track">
+              <div class="bench__bar bench__bar--hero" style="width: 22.3%;"></div>
+            </div>
+            <span class="bench__value bench__value--hero">8.22s</span>
+          </div>
+          <div class="bench__row">
+            <span class="bench__label">NVIDIA Run:ai</span>
+            <div class="bench__track">
+              <div class="bench__bar" style="width: 43%;"></div>
+            </div>
+            <span class="bench__value">15.85s</span>
+          </div>
+          <div class="bench__row">
+            <span class="bench__label">Hugging Face hf_transfer</span>
+            <div class="bench__track">
+              <div class="bench__bar" style="width: 100%;"></div>
+            </div>
+            <span class="bench__value">36.88s</span>
+          </div>
+        </div>
+        <div class="bench__delta">
+          <span class="bench__delta-label">Performance delta</span>
+          <div class="bench__delta-stat">
+            <span class="bench__delta-value">350%</span>
+            <span class="bench__delta-sub">(4.5&times; faster)</span>
+          </div>
+        </div>
+      </div>
+      <a href="https://vajra.tvashta-labs.in/" target="_blank" rel="noopener" class="hero__cta" style="margin-top: 2rem;">Try Vajra</a>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="how">
+        <div class="how__col how__col--before">
+          <div class="how__label how__label--before">Without Tvashta Labs</div>
+          <div class="how__items">
+            <div class="how__item">ML Engineers get GPUs from platform A, use tool B and tool C, and stitch together multiple workflows.</div>
+            <div class="how__item">Setup is unnecessarily complex. Engineers need to learn about unrelated infrastructure just to start training.</div>
+            <div class="how__item">Datacenters have raw GPUs, but orchestrating them for AI workloads is incredibly difficult.</div>
+            <div class="how__item">Existing orchestration software (like OpenStack) is too heavy, bloated, and slow for modern AI needs.</div>
+          </div>
+        </div>
+        <div class="how__col how__col--after">
+          <div class="how__label how__label--after">With Tvashta Labs</div>
+          <div class="how__items">
+            <div class="how__item">One platform with all AI tools integrated, ready for ML engineers to use without any setup.</div>
+            <div class="how__item">What used to take days of engineering time to set up, now can be set up in a click.</div>
+            <div class="how__item">Lightweight orchestration that manages bare-metal GPUs, faster and leaner than OpenStack.</div>
+            <div class="how__item">Directly increases utilization, revenue, and contract value for GPU datacenters.</div>
+          </div>
+        </div>
+      </div>
+      <p class="how__summary">Tvashta Labs is designed for <strong>Tier 2 and Tier 3 regional GPU datacenters</strong>, and <strong>enterprises building on-premise private AI clouds</strong>.</p>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section id="team">
+    <div class="container">
+      <h2 class="section-title">Team</h2>
+      <div class="team">
+        <article class="founder">
+          <h3 class="founder__name">Ishan Khare</h3>
+          <ul class="founder__bullets">
+            <li>One of the first engineers at vCluster (helped build the core product and scale from Seed to Series A).</li>
+            <li>Deep expertise in datacenter virtualization; published a book on KubeVirt based on work with a GPU Datacenter.</li>
+            <li>Speaker at KubeCon EU Valencia 2022.</li>
+          </ul>
+          <a href="https://www.linkedin.com/in/ishan-khare-68a49985/" target="_blank" rel="noopener" class="linkedin-btn">LinkedIn</a>
+        </article>
+        <article class="founder">
+          <h3 class="founder__name">Shivang K Raghuvanshi</h3>
+          <ul class="founder__bullets">
+            <li>Specializes in systems programming and container networking.</li>
+            <li>Worked on Podman's core network management tools in Rust during the Linux Foundation's LFX Mentorship.</li>
+            <li>Speaker at KubeCon EU Amsterdam 2026.</li>
+          </ul>
+          <a href="https://www.linkedin.com/in/shivkr6/" target="_blank" rel="noopener" class="linkedin-btn">LinkedIn</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2 class="contact__headline">Let's build the future of AI infrastructure together.</h2>
+      <div class="contact__rule"></div>
+      <div class="contact__links">
+        <p>Ishan Khare &middot; <a href="mailto:ishan@tvashta-labs.in">ishan@tvashta-labs.in</a></p>
+        <p>Shivang K Raghuvanshi &middot; <a href="mailto:shivkr@tvashta-labs.in">shivkr@tvashta-labs.in</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Tvashta Labs. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
